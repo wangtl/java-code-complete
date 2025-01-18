@@ -50,12 +50,14 @@ public class PackageScanner {
 
     private static void scanDirectory(File directory, Set<Class<?>> classes, String packageName) throws ClassNotFoundException {
         File[] files = directory.listFiles();
-        for (File file : files) {
-            if (file.isDirectory()) {
-                scanDirectory(file, classes, packageName + "." + file.getName());
-            } else if (file.getName().endsWith(".class")) {
-                String className = packageName + '.' + file.getName().substring(0, file.getName().length() - 6);
-                classes.add(Thread.currentThread().getContextClassLoader().loadClass(className));
+        if(files != null) {
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    scanDirectory(file, classes, packageName + "." + file.getName());
+                } else if (file.getName().endsWith(".class")) {
+                    String className = packageName + '.' + file.getName().substring(0, file.getName().length() - 6);
+                    classes.add(Thread.currentThread().getContextClassLoader().loadClass(className));
+                }
             }
         }
     }
